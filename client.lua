@@ -735,20 +735,21 @@ CreateThread(function()
 end)
 
 CreateThread(function()
-    local financeZone = BoxZone:Create(Config.FinanceZone, 2.0, 2.0, {
-        name="financeZone",
-        offset={0.0, 0.0, 0.0},
-        scale={1.0, 1.0, 1.0},
-        debugPoly=false,
-    })
+    for k,v in pairs(Config.Shops) do
+        if v.HasFinanceZone then
+            local financeZone = PolyZone:Create(Config.Shops[k]["FinanceZonePoly"], {
+                name="financeZone"
+            })
 
-    financeZone:onPlayerInOut(function(isPointInside)
-        if isPointInside then
-            exports['qb-menu']:showHeader(financeMenu)
-        else
-            exports['qb-menu']:closeMenu()
+            financeZone:onPlayerInOut(function(isPointInside)
+                if isPointInside then
+                    exports['qb-menu']:showHeader(financeMenu)
+                else
+                    exports['qb-menu']:closeMenu()
+                end
+            end)
         end
-    end)
+    end
 end)
 
 CreateThread(function()
